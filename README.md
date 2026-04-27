@@ -45,3 +45,31 @@ python cuped_arpu_opt.py \
 2. 统一 winsorize/截尾 规则，先处理极端值再拟合 CUPED。  
 3. 避免引入泄漏变量（实验期间才可观测到的特征）。  
 4. 按用户粒度聚合后再运行，避免重复曝光造成方差估计偏差。
+
+## `codex/optimize-arpu-sensitivity-in-cuped-3cfgvj` 合并到 `main` 冲突处理
+
+如果把功能分支合并到 `main` 时出现冲突，可以按下面流程处理（推荐）：
+
+```bash
+# 1) 确保本地 main 最新
+git checkout main
+git pull --ff-only origin main
+
+# 2) 发起合并并查看冲突文件
+git merge codex/optimize-arpu-sensitivity-in-cuped-3cfgvj
+git status
+
+# 3) 解决冲突后继续
+git add README.md cuped_arpu_opt.py
+git commit -m "Resolve merge conflicts for CUPED ARPU optimization"
+```
+
+冲突解决建议：
+
+- `README.md`：保留“运行方式 / 输出解释 / 实践建议”三个章节，避免丢失使用说明。  
+- `cuped_arpu_opt.py`：保留 `fit_cuped`、`format_report` 和命令行参数校验逻辑，确保脚本可直接运行。  
+- 解决后先执行一次基础检查：
+
+```bash
+python -m py_compile cuped_arpu_opt.py
+```
